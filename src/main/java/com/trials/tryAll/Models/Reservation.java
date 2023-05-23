@@ -30,15 +30,13 @@ public class Reservation {
     private Room room;
 
     @NotNull(message = "Check-in date is required")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date checkInDate;
 
     @NotNull(message = "Check-out date is required")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date checkOutDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "dd-MM-yyyy hh:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date timestamp;
 
     public Reservation(){

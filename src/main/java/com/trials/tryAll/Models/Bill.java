@@ -26,6 +26,10 @@ public class Bill {
     @Column
     private String details;
 
+    @Embedded
+    @Column
+    private Payment payment;
+
     @Column
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -38,6 +42,7 @@ public class Bill {
 
     public Bill() {
         this.billDate = new Date();
+        this.payment = new Payment();
     }
     public Bill(double amount, String details, Guest guest) {
         this();

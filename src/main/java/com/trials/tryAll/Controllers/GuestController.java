@@ -1,8 +1,6 @@
 package com.trials.tryAll.Controllers;
 
-import com.trials.tryAll.Models.CheckInCheckOutDates;
-import com.trials.tryAll.Models.Guest;
-import com.trials.tryAll.Models.Reservation;
+import com.trials.tryAll.Models.*;
 import com.trials.tryAll.Services.GuestService;
 import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
@@ -88,4 +86,35 @@ public class GuestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{guestId}/bills")
+    public ResponseEntity<List<Bill>> getGuestBills (@PathVariable (value = "guestId") long guestId){
+        List<Bill> result = guestService.getAllBillsByGuestId(guestId);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+    @GetMapping(value = "/{guestId}/payedBills")
+    public ResponseEntity<List<Bill>> getGuestPayedBills (@PathVariable (value = "guestId") long guestId){
+        List<Bill> result = guestService.getAllPayedBillsByGuestId(guestId);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+    @GetMapping(value = "/{guestId}/unPayedBills")
+    public ResponseEntity<List<Bill>> getGuestUnPayedBills (@PathVariable (value = "guestId") long guestId){
+        List<Bill> result = guestService.getAllUnPayedBillsByGuestId(guestId);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+    @PostMapping(value = "/{guestId}/pay/{billId}")
+    public ResponseEntity<Bill> payBill (@PathVariable (value = "guestId") long guestId,
+                                               @PathVariable (value = "billId") long billId,
+                                               @Valid @RequestBody Payment payment
+                                               ){
+        Bill result = guestService.payBill(guestId,billId,payment);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{guestId}/add-order")
+    public ResponseEntity<Bill> makeOrder(@PathVariable (value = "guestId") long guestId,
+                                          @Valid @RequestBody Order order){
+        Bill result = guestService.makeOrder(guestId,order);
+        return new ResponseEntity<>(result,HttpStatus.CREATED);
+
+    }
 }

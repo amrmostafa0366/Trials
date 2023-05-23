@@ -1,8 +1,6 @@
 package com.trials.tryAll.Services;
 
-import com.trials.tryAll.Models.CheckInCheckOutDates;
-import com.trials.tryAll.Models.Guest;
-import com.trials.tryAll.Models.Reservation;
+import com.trials.tryAll.Models.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,4 +24,14 @@ public interface GuestService {
     Reservation addReservation(long guestId, long roomId, CheckInCheckOutDates dates);
 
     void deleteReservationById(long guestId, long reservationId);
+
+    List<Bill> getAllBillsByGuestId(long guestId);
+
+    List<Bill> getAllPayedBillsByGuestId(long guestId);
+
+    List<Bill> getAllUnPayedBillsByGuestId(long guestId);
+
+    Bill payBill(long guestId, long billId, Payment payment);
+
+    Bill makeOrder(long guestId, Order order);
 }
