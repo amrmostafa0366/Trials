@@ -23,7 +23,7 @@ public interface GuestService {
 
     Guest checkOut(long guestId);
 
-    Reservation addReservation(long guestId, long roomId, Reservation reservation);
+    Reservation addReservation(long guestId, long roomId, CheckInCheckOutDates dates);
 
     void deleteReservationById(long guestId, long reservationId);
 }

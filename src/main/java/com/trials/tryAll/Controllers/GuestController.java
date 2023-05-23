@@ -44,7 +44,7 @@ public class GuestController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteGuest(@PathVariable("id") long id){
+    public ResponseEntity<Void> deleteGuestById(@PathVariable("id") long id){
          guestService.deleteGuestById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -62,7 +62,7 @@ public class GuestController {
     @PostMapping(value = "/checkIn/{guestId}/{roomId}")
     public ResponseEntity<Guest> checkIn(@PathVariable (value = "guestId") long guestId,
                                          @PathVariable (value = "roomId") long roomId,
-                                         @RequestBody CheckInCheckOutDates dates
+                                         @Valid @RequestBody CheckInCheckOutDates dates
                                          ){
         Guest result = guestService.checkIn(guestId,roomId,dates);
         return new ResponseEntity<>(result,HttpStatus.CREATED);
@@ -75,8 +75,10 @@ public class GuestController {
     }
 
     @PostMapping(value = "/reservation/{guestId}/{roomId}")
-    public ResponseEntity<Reservation> addReservation(@PathVariable (value = "guestId") long guestId, @PathVariable (value = "roomId") long roomId,@Valid @RequestBody Reservation reservation){
-        Reservation result = guestService.addReservation(guestId,roomId,reservation);
+    public ResponseEntity<Reservation> addReservation(@PathVariable (value = "guestId") long guestId,
+                                                      @PathVariable (value = "roomId") long roomId,
+                                                      @Valid @RequestBody CheckInCheckOutDates dates){
+        Reservation result = guestService.addReservation(guestId,roomId,dates);
         return new ResponseEntity<>(result,HttpStatus.CREATED);
     }
 

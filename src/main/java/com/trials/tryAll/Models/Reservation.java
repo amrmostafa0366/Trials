@@ -45,12 +45,12 @@ public class Reservation {
         this.timestamp = new Date();
     }
 
-    public Reservation(long reservationId, Guest guest, Room room, Date checkInDate, Date checkOutDate) {
+    public Reservation( Guest guest, Room room, Date checkInDate, Date checkOutDate) {
         this();
-        this.reservationId = reservationId;
         this.guest = guest;
         this.room = room;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
     }
+
 }

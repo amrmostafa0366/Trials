@@ -101,7 +101,9 @@ public class GuestServiceImplementation implements GuestService{
         );
         double cost = room.getNightCost()*numberOfDays;
 
-        Bill bill = new Bill(cost, "Accommodation", guest);
+        Bill bill = new Bill(cost,
+                "Accommodation In Room "+room.getRoomNumber()+" For: "+numberOfDays+" Days From "
+                        + dates.getCheckInDate() + " To "+dates.getCheckOutDate(), guest);
 
         room.setCheckInDate(dates.getCheckInDate());
         room.setCheckOutDate(dates.getCheckOutDate());
@@ -120,6 +122,8 @@ public class GuestServiceImplementation implements GuestService{
             Room room = roomRepository.findById(guest.getRoom().getRoomId()).get();
             guest.setRoom(null);
             room.setGuest(null);
+            room.setCheckInDate(null);
+            room.setCheckOutDate(null);
             roomRepository.save(room);
             return guestRepository.save(guest);
         }
@@ -127,7 +131,7 @@ public class GuestServiceImplementation implements GuestService{
     }
 
     @Override
-    public Reservation addReservation(long guestId, long roomId,Reservation reservation) {
+    public Reservation addReservation(long guestId, long roomId,CheckInCheckOutDates dates) {
         Guest guest = guestRepository.findById(guestId)
                 .orElseThrow(() -> new NotFoundException("Guest not found"));
 
@@ -135,16 +139,14 @@ public class GuestServiceImplementation implements GuestService{
                 .orElseThrow(() -> new NotFoundException("Room not found"));
 
 
-        Date checkInDate = reservation.getCheckInDate();
-        Date checkOutDate = reservation.getCheckOutDate();
-
         // Check if there are any existing reservations between the given dates
-        List<Reservation> existingReservations = reservationRepository.findBetweenDates(roomId, checkInDate, checkOutDate);
+        List<Reservation> existingReservations = reservationRepository.findBetweenDates(roomId, dates.getCheckInDate(), dates.getCheckOutDate());
         if (!existingReservations.isEmpty()) {
             throw new ConflictException("There are existing reservations between the specified dates");
         }
-        reservation.setGuest(guest);
-        reservation.setRoom(room);
+
+        Reservation reservation = new Reservation(guest,room,dates.getCheckInDate(),dates.getCheckOutDate());
+
         return reservationRepository.save(reservation);
     }
 
