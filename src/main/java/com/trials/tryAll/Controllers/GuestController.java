@@ -34,11 +34,7 @@ public class GuestController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Guest> getGuestById(@PathVariable("id") long id){
         Guest result = guestService.getGuestById(id);
-        if (result != null) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -50,11 +46,7 @@ public class GuestController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Guest> updateGuest(@PathVariable("id") long id, @Valid @RequestBody Guest guest){
         Guest result = guestService.updateGuest(id, guest);
-        if (result != null) {
-            return ResponseEntity.ok(result);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
     @PostMapping(value = "/checkIn/{guestId}/{roomId}")

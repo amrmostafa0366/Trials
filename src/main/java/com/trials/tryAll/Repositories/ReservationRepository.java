@@ -15,4 +15,12 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     List<Reservation> findBetweenDates(@Param("roomId") long roomId,
                                        @Param("checkInDate") Date checkInDate,
                                        @Param("checkOutDate") Date checkOutDate);
+
+    List<Reservation> findByGuestGuestId(long guestId);
+
+    List<Reservation> findByRoomRoomId(long roomId);
+
+    List<Reservation> findByCheckInDate(Date date);
+
+    List<Reservation> findByCheckOutDate(Date date);
 }
