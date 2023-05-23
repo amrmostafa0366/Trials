@@ -33,4 +33,8 @@ public class Guest {
     @JsonIgnoreProperties({"guest","room"})
     @OneToMany(mappedBy = "guest",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Reservation> reservations;
+
+    @JsonIgnoreProperties({"guest"})
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Bill> bills;
 }

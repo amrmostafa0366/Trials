@@ -3,15 +3,16 @@ package com.trials.tryAll.Services;
 import com.trials.tryAll.Errors.ApiBaseException;
 import com.trials.tryAll.Errors.ConflictException;
 import com.trials.tryAll.Errors.NotFoundException;
-import com.trials.tryAll.Models.Guest;
-import com.trials.tryAll.Models.Reservation;
-import com.trials.tryAll.Models.Room;
+import com.trials.tryAll.Models.*;
+import com.trials.tryAll.Repositories.BillRepository;
 import com.trials.tryAll.Repositories.GuestRepository;
 import com.trials.tryAll.Repositories.ReservationRepository;
 import com.trials.tryAll.Repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,6 +27,8 @@ public class GuestServiceImplementation implements GuestService{
     private RoomRepository roomRepository;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private BillRepository billRepository;
 
     @Override
     public Guest saveGuest(Guest guest) {
@@ -75,7 +78,7 @@ public class GuestServiceImplementation implements GuestService{
     }
 
     @Override
-    public Guest checkIn(long guestId, long roomId) {
+    public Guest checkIn(long guestId, long roomId, CheckInCheckOutDates dates) {
 
         Guest guest = guestRepository.findById(guestId)
                 .orElseThrow(() -> new NotFoundException("Guest not found"));
@@ -88,9 +91,25 @@ public class GuestServiceImplementation implements GuestService{
         }else if(guest.getRoom() != null){
             throw new ConflictException("Guest Is Already CheckedIn");
         }
+        List<Reservation> existingReservations = reservationRepository.findBetweenDates(roomId, dates.getCheckInDate(), dates.getCheckOutDate());
+        if(!existingReservations.isEmpty()){
+                throw new ConflictException("There are existing reservations between the specified dates");
+            }
+
+        long numberOfDays = ChronoUnit.DAYS.between(
+                dates.getCheckInDate().toInstant(), dates.getCheckOutDate().toInstant()
+        );
+        double cost = room.getNightCost()*numberOfDays;
+
+        Bill bill = new Bill(cost, "Accommodation", guest);
+
+        room.setCheckInDate(dates.getCheckInDate());
+        room.setCheckOutDate(dates.getCheckOutDate());
+
         guest.setRoom(room);
         room.setGuest(guest);
         roomRepository.save(room);
+        billRepository.save(bill);
         return guestRepository.save(guest);
     }
 

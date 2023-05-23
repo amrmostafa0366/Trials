@@ -7,9 +7,6 @@ import java.util.List;
 
 @Service
 public interface ReservationService {
-    static void deleteReservationById(long id) {
-    }
-
     Reservation saveReservation(Reservation reservation);
 
     List<Reservation> getAllReservations();
@@ -17,4 +14,6 @@ public interface ReservationService {
     Reservation getReservationById(long id);
 
     Reservation updateReservation(long id, Reservation reservation);
+
+    void deleteReservationById(long id);
 }

@@ -42,4 +42,9 @@ public class ReservationServiceImplementation implements ReservationService{
     public Reservation updateReservation(long id, Reservation reservation) {
         return null;
     }
+
+    @Override
+    public void deleteReservationById(long id) {
+
+    }
 }

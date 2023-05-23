@@ -1,5 +1,6 @@
 package com.trials.tryAll.Services;
 
+import com.trials.tryAll.Models.CheckInCheckOutDates;
 import com.trials.tryAll.Models.Guest;
 import com.trials.tryAll.Models.Reservation;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public interface GuestService {
 
     Guest updateGuest(long id, Guest guest);
 
-    Guest checkIn(long guestId, long roomId);
+    Guest checkIn(long guestId, long roomId, CheckInCheckOutDates dates);
 
     Guest checkOut(long guestId);
 

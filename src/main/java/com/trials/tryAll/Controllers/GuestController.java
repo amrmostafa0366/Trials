@@ -1,5 +1,6 @@
 package com.trials.tryAll.Controllers;
 
+import com.trials.tryAll.Models.CheckInCheckOutDates;
 import com.trials.tryAll.Models.Guest;
 import com.trials.tryAll.Models.Reservation;
 import com.trials.tryAll.Services.GuestService;
@@ -59,8 +60,11 @@ public class GuestController {
     }
 
     @PostMapping(value = "/checkIn/{guestId}/{roomId}")
-    public ResponseEntity<Guest> checkIn(@PathVariable (value = "guestId") long guestId,@PathVariable (value = "roomId") long roomId){
-        Guest result = guestService.checkIn(guestId,roomId);
+    public ResponseEntity<Guest> checkIn(@PathVariable (value = "guestId") long guestId,
+                                         @PathVariable (value = "roomId") long roomId,
+                                         @RequestBody CheckInCheckOutDates dates
+                                         ){
+        Guest result = guestService.checkIn(guestId,roomId,dates);
         return new ResponseEntity<>(result,HttpStatus.CREATED);
     }
 
